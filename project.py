@@ -25,3 +25,12 @@ conn.execute("""
         custPhoneNo INTEGER NOT NULL
     )
 """)
+
+conn.execute("""
+    CREATE TABLE IF NOT EXISTS Restraunt(
+        restrauntID INTEGER PRIMARY KEY,
+        restrauntName TEXT NOT NULL,
+        restrauntAddress TEXT NOT NULL,
+        restrauntPhoneNo INTEGER NOT NULL
+    )
+""")
