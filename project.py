@@ -12,3 +12,16 @@ conn.execute("""
         FOREIGN KEY(dishID) REFERENCES Dish(dishID)
     )
 """)
+
+conn.execute("""
+    CREATE TABLE IF NOT EXISTS Customers(
+        custID INTEGER PRIMARY KEY,
+        custFirstName TEXT NOT NULL,
+        custSecondName TEXT NOT NULL,
+        custEmail TEXT NOT NULL,
+        custAddress TEXT NOT NULL,
+        suburb TEXT NOT NULL,
+        PostCode INTEGER NOT NULL, 
+        custPhoneNo INTEGER NOT NULL
+    )
+""")
