@@ -69,7 +69,7 @@ with open("orders.csv", "r", encoding="utf-8-sig") as ordersData:
     for row in reader:
         cursor.execute(
             "INSERT INTO Orders VALUES (?, ?, ?, ?, ?, ?)", row
-        )
+            )
 
 with open("restraunt.csv", "r", encoding="utf-8-sig") as restrauntData:
     reader = csv.reader(restrauntData)
@@ -78,4 +78,13 @@ with open("restraunt.csv", "r", encoding="utf-8-sig") as restrauntData:
     for row in reader:
         cursor.execute(
             "INSERT INTO Restraunt VALUES (?, ?, ?, ?)", row
-        )
+            )
+
+with open("dish.csv", "r", encoding="utf-8-sig") as dishData:
+    reader = csv.reader(dishData)
+    next(reader)
+
+    for row in reader:
+        cursor.execute(
+            "INSERT INTO Dish VALUES (?, ?, ?, ?)", row
+            )
