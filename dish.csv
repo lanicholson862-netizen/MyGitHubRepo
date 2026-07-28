@@ -1,0 +1,106 @@
+dishID,restrauntID,dishName,dishPrice
+1,1,Fries,3
+2,1,Pepperoni Pizza,9
+3,1,Fish and Chips,11
+4,1,Tempura,12
+5,1,Chicken Curry,13
+6,1,Pasta Primavera,14
+7,2,Sushi Roll,10
+8,2,Burrito,8
+9,2,Pepperoni Pizza,9
+10,2,Steak,20
+11,2,Fish and Chips,11
+12,3,Steak,20
+13,3,Burrito,8
+14,3,Veggie Taco,6
+15,3,Fish and Chips,11
+16,3,Cheeseburger,8.5
+17,4,Fries,3
+18,4,Spaghetti,12.5
+19,4,Veggie Taco,6
+20,4,Caesar Salad,7.5
+21,4,Chicken Curry,13
+22,4,Lasagna,15
+23,5,Spaghetti,12.5
+24,5,Fish and Chips,11
+25,5,Pasta Primavera,14
+26,5,Fries,3
+27,5,Chicken Curry,13
+28,5,Grilled Chicken,16
+29,5,Sushi Roll,10
+30,6,Lasagna,15
+31,6,Pepperoni Pizza,9
+32,6,Veggie Taco,6
+33,7,Cheeseburger,8.5
+34,7,Grilled Chicken,16
+35,7,Caesar Salad,7.5
+36,7,Spaghetti,12.5
+37,1,Sushi Roll,10
+38,2,Pasta Primavera,14
+39,3,Grilled Chicken,16
+40,4,Steak,20
+41,4,Pasta Primavera,14
+42,4,Tempura,12
+43,5,Tempura,12
+44,5,Caesar Salad,7.5
+45,5,Pepperoni Pizza,9
+46,6,Pasta Primavera,14
+47,6,Caesar Salad,7.5
+48,6,Burrito,8
+49,6,Cheeseburger,8.5
+50,6,Fries,3
+51,7,Pasta Primavera,14
+52,7,Tempura,12
+53,7,Lasagna,15
+54,7,Steak,20
+55,7,Chicken Curry,13
+56,1,Veggie Taco,6
+57,2,Grilled Chicken,16
+58,2,Spaghetti,12.5
+59,3,Chicken Curry,13
+60,3,Pepperoni Pizza,9
+61,4,Fish and Chips,11
+62,4,Grilled Chicken,16
+63,5,Burrito,8
+64,6,Steak,20
+65,6,Chicken Curry,13
+66,2,Tempura,12
+67,3,Sushi Roll,10
+68,3,Caesar Salad,7.5
+69,3,Fries,3
+70,3,Spaghetti,12.5
+71,4,Sushi Roll,10
+72,5,Cheeseburger,8.5
+73,5,Steak,20
+74,6,Fish and Chips,11
+75,7,Fries,3
+76,7,Sushi Roll,10
+77,7,Fish and Chips,11
+78,1,Caesar Salad,7.5
+79,1,Lasagna,15
+80,2,Chicken Curry,13
+81,2,Veggie Taco,6
+82,2,Lasagna,15
+83,3,Pasta Primavera,14
+84,4,Cheeseburger,8.5
+85,6,Sushi Roll,10
+86,1,Cheeseburger,8.5
+87,1,Steak,20
+88,4,Burrito,8
+89,6,Spaghetti,12.5
+90,7,Veggie Taco,6
+91,1,Grilled Chicken,16
+92,6,Grilled Chicken,16
+93,2,Fries,3
+94,3,Lasagna,15
+95,5,Lasagna,15
+96,7,Pepperoni Pizza,9
+97,1,Spaghetti,12.5
+98,2,Caesar Salad,7.5
+99,3,Tempura,12
+100,6,Tempura,12
+101,4,Pepperoni Pizza,9
+102,2,Cheeseburger,8.5
+103,5,Veggie Taco,6
+104,7,Burrito,8
+105,1,Burrito,8

@@ -285,3 +285,46 @@ instruction_label = tk.Label(
 )
 
 instruction_label.pack(pady=10)
+
+query_choice = tk.IntVar()
+query_choice.set(0)
+
+for number in queries:
+    radio = tk.Radiobutton(
+        window,
+        text=f"Query {number}: {queries[number]['title']}",
+        variable=query_choice,
+        value=number,
+        font=("Arial", 11),
+        anchor="w"
+    )
+
+    radio.pack(
+        fill="x",
+        padx=80,
+        pady=5
+    )
+
+process_button = tk.Button(
+    window,
+    text="Process",
+    command=processQuery,
+    font=("Arial", 12, "bold"),
+    width=15
+)
+
+process_button.pack(pady=25)
+
+close_button = tk.Button(
+    window,
+    text="Close",
+    command=window.destroy,
+    font=("Arial", 12, "bold"),
+    width=15
+)
+
+close_button.pack()
+
+window.mainloop()
+
+conn.close()
