@@ -264,3 +264,24 @@ def processQuery():
             "Report created",
             f"{filename} has been successfully created."
         )
+
+window = tk.TK()
+
+window.title("IDEK")
+window.geometry("900x600")
+
+title_label = tk.Label(
+    window,
+    text="Orders Database Query Reports",
+    font=("Arial", 18, "bold")
+)
+
+title_label.pack(pady=20)
+
+instruction_label = tk.Label(
+    window,
+    text="Select a query and press Process",
+    font=("Arial", 12)
+)
+
+instruction_label.pack(pady=10)
