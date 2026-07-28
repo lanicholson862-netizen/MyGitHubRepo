@@ -1,4 +1,6 @@
 import sqlite3
+import os
+import csv
 
 DB_Name = "project.db"
 
@@ -49,3 +51,13 @@ conn.execute("""
         FOREIGN KEY(restrauntID) REFERENCES Restraunt(restrauntID)
     )
 """)
+
+
+with open("customers.csv", "r", encoding="utf-8-sig") as custData:
+    reader = csv.reader(custData)
+    next(reader)
+
+    for row in reader:
+        cursor.execute(
+            "INSERT INTO Customers VALUES (?, ?, ?, ?, ?, ?, ?, ?)", row
+            )
