@@ -191,12 +191,21 @@ queries = {
         },
     15: {"title" : "Top 3 best-selling dishes per restraunt",
         "sql" : """
-                SELECT Restraunt.restrauntID, restrauntName, dishName, SUM(quantity) AS totalSold
+                WITH ranked AS (
+                SELECT Restraunt.restrauntID, restrauntName, dishName, SUM(quantity) AS totalSold,
+                       ROW_NUMBER() OVER (
+                           PARTITION BY Restraunt.restrauntID
+                           ORDER BY SUM(quantity) DESC
+                       ) AS rnk
                 FROM Orders
                 JOIN Dish ON Orders.dishID = Dish.dishID
                 JOIN Restraunt ON Dish.restrauntID = Restraunt.restrauntID
                 GROUP BY Restraunt.restrauntID, Dish.dishID
-                ORDER BY Restraunt.restrauntID, totalSold DESC"""
+            )
+            SELECT restrauntID, restrauntName, dishName, totalSold
+            FROM ranked
+            WHERE rnk <= 3
+            ORDER BY restrauntID, totalSold DESC"""
         },
     16: {"title" : "Dishes that have never been ordered",
         "sql" : """
@@ -215,12 +224,15 @@ queries = {
     18: {"title" : "Customers who have spent above the average customer spend",
         "sql" : """
                 SELECT Customers.custID, custFirstName, custSecondName, SUM(totalAmmount) AS totalSpent
-                FROM Orders
-                JOIN Customers ON Orders.custID = Customers.custID
-                GROUP BY Customers.custID
-                HAVING totalSpent > (
-                    SELECT AVG(totalAmmount) FROM Orders
-                )"""
+            FROM Orders
+            JOIN Customers ON Orders.custID = Customers.custID
+            GROUP BY Customers.custID
+            HAVING totalSpent > (
+                SELECT AVG(custTotal) FROM (
+                    SELECT SUM(totalAmmount) AS custTotal
+                    FROM Orders
+                    GROUP BY custID
+            )"""
         },
 }
 
