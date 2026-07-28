@@ -1,6 +1,8 @@
 import sqlite3
 import os
 import csv
+import tkinter as tk
+from tkinter import messagebox
 
 DB_Name = "project.db"
 
@@ -88,6 +90,8 @@ with open("dish.csv", "r", encoding="utf-8-sig") as dishData:
         cursor.execute(
             "INSERT INTO Dish VALUES (?, ?, ?, ?)", row
             )
+
+conn.commit()
 
 queries = {
     1: {"title" : "Retrieve all orders based on cust",
@@ -219,3 +223,44 @@ queries = {
                 )"""
         },
 }
+
+def processQuery():
+    selected = query_choice.get()
+    if selected == 0:
+        messagebox.showwarning(
+            "No Query Selected",
+            "Please select a query first."
+        )
+        return
+
+    sql = queries[selected]["sql"]
+    title = queries[selected]["title"]
+
+
+    cursor.execute(sql)
+    results = cursor.fetchall()
+
+    columnNames = []
+    for column in cursor.description():
+        columnNames.append(column[0])
+
+    filename = f"Query_{selected}_report.txt"
+
+    with open(filename, "w", encoding="utf-8") as file:
+        file.write(title + "\n")
+
+        for heading in columnNames:
+            file.write(f"{heading:<25}")
+        
+            file.write("\n")
+            file.write("-" * 70 + "\n")
+        
+            for row in results:
+                for value in row:
+                    file.write(f"{str(value):<25}")
+                file.write("\n")
+        
+        messagebox.showinfo(
+            "Report created",
+            f"{filename} has been successfully created."
+        )
