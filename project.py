@@ -34,3 +34,13 @@ conn.execute("""
         restrauntPhoneNo TEXT NOT NULL
     )
 """)
+
+conn.execute("""
+    CREATE TABLE IF NOT EXISTS Dish(
+        dishID INTEGER PRIMARY KEY,
+        restrauntID INTEGER NOT NULL,
+        dishName TEXT NOT NULL, 
+        dishPrice REAL NOT NULL,
+        FOREIGN KEY(restrauntID) REFERENCES Restraunt(restrauntID)
+    )
+""")
