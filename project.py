@@ -268,7 +268,7 @@ def processQuery():
 window = tk.Tk()
 
 window.title("IDEK")
-window.geometry("900x600")
+window.geometry("900x1000")
 
 title_label = tk.Label(
     window,
