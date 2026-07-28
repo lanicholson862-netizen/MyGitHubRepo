@@ -22,7 +22,7 @@ conn.execute("""
         custAddress TEXT NOT NULL,
         suburb TEXT NOT NULL,
         PostCode INTEGER NOT NULL, 
-        custPhoneNo INTEGER NOT NULL
+        custPhoneNo TEXT NOT NULL
     )
 """)
 
@@ -31,6 +31,6 @@ conn.execute("""
         restrauntID INTEGER PRIMARY KEY,
         restrauntName TEXT NOT NULL,
         restrauntAddress TEXT NOT NULL,
-        restrauntPhoneNo INTEGER NOT NULL
+        restrauntPhoneNo TEXT NOT NULL
     )
 """)
