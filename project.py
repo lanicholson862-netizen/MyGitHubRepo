@@ -7,7 +7,7 @@ DB_Name = "project.db"
 conn = sqlite3.connect(DB_Name)
 cursor = conn.cursor()
 
-conn.execute("""
+cursor.execute("""
     CREATE TABLE IF NOT EXISTS Orders(
         orderID INTEGER PRIMARY KEY,
         custID INTEGER NOT NULL,
@@ -20,7 +20,7 @@ conn.execute("""
     )
 """)
 
-conn.execute("""
+cursor.execute("""
     CREATE TABLE IF NOT EXISTS Customers(
         custID INTEGER PRIMARY KEY,
         custFirstName TEXT NOT NULL,
@@ -33,7 +33,7 @@ conn.execute("""
     )
 """)
 
-conn.execute("""
+cursor.execute("""
     CREATE TABLE IF NOT EXISTS Restraunt(
         restrauntID INTEGER PRIMARY KEY,
         restrauntName TEXT NOT NULL,
@@ -42,7 +42,7 @@ conn.execute("""
     )
 """)
 
-conn.execute("""
+cursor.execute("""
     CREATE TABLE IF NOT EXISTS Dish(
         dishID INTEGER PRIMARY KEY,
         restrauntID INTEGER NOT NULL,
