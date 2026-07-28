@@ -170,4 +170,52 @@ queries = {
                 FROM Orders
                 JOIN Dish ON Orders.dishID = Dish.dishID"""
         },
+    13: {"title" : "Orders placed within a date range",
+        "sql" : """
+                SELECT orderID, custID, orderDate, totalAmmount
+                FROM Orders
+                WHERE orderDate BETWEEN ? AND ?"""
+        },
+    14: {"title" : "Top 5 highest-spending customers",
+        "sql" : """
+                SELECT Customers.custID, custFirstName, custSecondName, SUM(totalAmmount) AS totalSpent
+                FROM Orders
+                JOIN Customers ON Orders.custID = Customers.custID
+                GROUP BY Customers.custID
+                ORDER BY totalSpent DESC
+                LIMIT 5"""
+        },
+    15: {"title" : "Top 3 best-selling dishes per restraunt",
+        "sql" : """
+                SELECT Restraunt.restrauntID, restrauntName, dishName, SUM(quantity) AS totalSold
+                FROM Orders
+                JOIN Dish ON Orders.dishID = Dish.dishID
+                JOIN Restraunt ON Dish.restrauntID = Restraunt.restrauntID
+                GROUP BY Restraunt.restrauntID, Dish.dishID
+                ORDER BY Restraunt.restrauntID, totalSold DESC"""
+        },
+    16: {"title" : "Dishes that have never been ordered",
+        "sql" : """
+                SELECT Dish.dishID, dishName
+                FROM Dish
+                LEFT JOIN Orders ON Dish.dishID = Orders.dishID
+                WHERE Orders.orderID IS NULL"""
+        },
+    17: {"title" : "Restraunts with no dishes listed",
+        "sql" : """
+                SELECT Restraunt.restrauntID, restrauntName
+                FROM Restraunt
+                LEFT JOIN Dish ON Restraunt.restrauntID = Dish.restrauntID
+                WHERE Dish.dishID IS NULL"""
+        },
+    18: {"title" : "Customers who have spent above the average customer spend",
+        "sql" : """
+                SELECT Customers.custID, custFirstName, custSecondName, SUM(totalAmmount) AS totalSpent
+                FROM Orders
+                JOIN Customers ON Orders.custID = Customers.custID
+                GROUP BY Customers.custID
+                HAVING totalSpent > (
+                    SELECT AVG(totalAmmount) FROM Orders
+                )"""
+        },
 }
