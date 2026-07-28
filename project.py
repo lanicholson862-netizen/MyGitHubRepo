@@ -70,3 +70,12 @@ with open("orders.csv", "r", encoding="utf-8-sig") as ordersData:
         cursor.execute(
             "INSERT INTO Orders VALUES (?, ?, ?, ?, ?, ?)", row
         )
+
+with open("restraunt.csv", "r", encoding="utf-8-sig") as restrauntData:
+    reader = csv.reader(restrauntData)
+    next(reader)
+
+    for row in reader:
+        cursor.execute(
+            "INSERT INTO Restraunt VALUES (?, ?, ?, ?)", row
+        )
