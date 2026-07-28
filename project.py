@@ -8,8 +8,13 @@ cursor = conn.cursor()
 conn.execute("""
     CREATE TABLE IF NOT EXISTS Orders(
         orderID INTEGER PRIMARY KEY,
+        custID INTEGER NOT NULL,
         dishID INTEGER NOT NULL,
-        FOREIGN KEY(dishID) REFERENCES Dish(dishID)
+        orderDate TEXT NOT NULL,
+        quantity INTEGER NOT NULL,
+        totalAmmount REAL NOT NULL,
+        FOREIGN KEY(dishID) REFERENCES Dish(dishID),
+        FOREIGN KEY(custID) REFERENCES Customers(custID)
     )
 """)
 
