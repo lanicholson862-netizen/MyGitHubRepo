@@ -61,3 +61,12 @@ with open("customers.csv", "r", encoding="utf-8-sig") as custData:
         cursor.execute(
             "INSERT INTO Customers VALUES (?, ?, ?, ?, ?, ?, ?, ?)", row
             )
+
+with open("orders.csv", "r", encoding="utf-8-sig") as ordersData:
+    reader = csv.reader(ordersData)
+    next(reader)
+
+    for row in reader:
+        cursor.execute(
+            "INSERT INTO Orders VALUES (?, ?, ?, ?, ?, ?)", row
+        )
