@@ -61,7 +61,7 @@ with open("customers.csv", "r", encoding="utf-8-sig") as custData:
 
     for row in reader:
         cursor.execute(
-            "INSERT INTO Customers VALUES (?, ?, ?, ?, ?, ?, ?, ?)", row
+            "INSERT OR IGNORE INTO Customers VALUES (?, ?, ?, ?, ?, ?, ?, ?)", row
             )
 
 with open("orders.csv", "r", encoding="utf-8-sig") as ordersData:
@@ -70,7 +70,7 @@ with open("orders.csv", "r", encoding="utf-8-sig") as ordersData:
 
     for row in reader:
         cursor.execute(
-            "INSERT INTO Orders VALUES (?, ?, ?, ?, ?, ?)", row
+            "INSERT OR IGNORE INTO Orders VALUES (?, ?, ?, ?, ?, ?)", row
             )
 
 with open("restraunt.csv", "r", encoding="utf-8-sig") as restrauntData:
@@ -79,7 +79,7 @@ with open("restraunt.csv", "r", encoding="utf-8-sig") as restrauntData:
 
     for row in reader:
         cursor.execute(
-            "INSERT INTO Restraunt VALUES (?, ?, ?, ?)", row
+            "INSERT OR IGNORE INTO Restraunt VALUES (?, ?, ?, ?)", row
             )
 
 with open("dish.csv", "r", encoding="utf-8-sig") as dishData:
@@ -88,7 +88,7 @@ with open("dish.csv", "r", encoding="utf-8-sig") as dishData:
 
     for row in reader:
         cursor.execute(
-            "INSERT INTO Dish VALUES (?, ?, ?, ?)", row
+            "INSERT OR IGNORE INTO Dish VALUES (?, ?, ?, ?)", row
             )
 
 conn.commit()
@@ -265,7 +265,7 @@ def processQuery():
             f"{filename} has been successfully created."
         )
 
-window = tk.TK()
+window = tk.Tk()
 
 window.title("IDEK")
 window.geometry("900x600")
