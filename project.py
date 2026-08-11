@@ -240,7 +240,44 @@ queries = {
         },
 }
 
+def getCustID(prompt="Enter Customer ID:"):
+    custID = simpledialog.askinteger("Customer ID", prompt)
+    if custID is None:
+        return None
+    return (custID,)
 
+def getRestrauntID():
+    restrauntID = simpledialog.askinteger("Restraunt ID", "Enter Restraunt ID:")
+    if restrauntID is None:
+        return None
+    return (restrauntID,)
+
+def getRestrauntName():
+    restrauntName = simpledialog.askstring(
+        "Restraunt Name",
+        "Enter Restraunt Name (partial name is OK):"
+    )
+    if not restrauntName:
+        return None
+    return (f"%{restrauntName}%",)
+
+def getDateRange():
+    startDate = simpledialog.askstring("Start Date", "Enter start date (YYYY-MM-DD):")
+    if not startDate:
+        return None
+    endDate = simpledialog.askstring("End Date", "Enter end date (YYYY-MM-DD):")
+    if not endDate:
+        return None
+    return (startDate, endDate)
+
+inputHandlers = {
+    1: lambda: getCustID(),
+    2: lambda: getRestrauntID(),
+    3: lambda: getCustID(),
+    4: lambda: getCustID(),
+    6: lambda: getRestrauntName(),
+    13: lambda: getDateRange(),
+}
 
 def processQuery():
     selected = query_choice.get()
@@ -255,7 +292,13 @@ def processQuery():
     title = queries[selected]["title"]
 
 
-    cursor.execute(sql)
+    params = ()
+    if selected in inputHandlers:
+        params = inputHandlers[selected]()
+        if params is None:
+            return
+
+    cursor.execute(sql, params)
     results = cursor.fetchall()
 
     columnNames = []
