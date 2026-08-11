@@ -3,8 +3,9 @@ import os
 import csv
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import simpledialog
 
-DB_Name = "project.db"
+DB_Name = "delivery_recording_system.db"
 
 conn = sqlite3.connect(DB_Name)
 cursor = conn.cursor()
@@ -53,7 +54,6 @@ cursor.execute("""
         FOREIGN KEY(restrauntID) REFERENCES Restraunt(restrauntID)
     )
 """)
-
 
 with open("customers.csv", "r", encoding="utf-8-sig") as custData:
     reader = csv.reader(custData)
@@ -111,13 +111,16 @@ queries = {
                 SELECT Customers.custID, custFirstName, custSecondName, SUM(totalAmmount) AS totalSpent
                 FROM Orders
                 JOIN Customers ON Orders.custID = Customers.custID
+                WHERE Customers.custID = ?
                 GROUP BY Customers.custID"""
         },
     4: {"title" : "Count number of orders placed by customer",
         "sql" : """
-                SELECT Customer.custID, COUNT(orderID) AS orderCount
+                SELECT Customers.custID, COUNT(orderID) AS orderCount
                 FROM Orders
-                JOIN Customers ON Orders.custID = Customers.custID"""
+                JOIN Customers ON Orders.custID = Customers.custID
+                WHERE Customers.custID = ?
+                GROUP BY Customers.custID"""
         },
     5: {"title" : "Customers without an order",
         "sql" : """
@@ -131,6 +134,7 @@ queries = {
                 SELECT restrauntName, dishName
                 FROM Dish
                 JOIN Restraunt ON Dish.restrauntID = Restraunt.restrauntID
+                WHERE restrauntName LIKE ?
                 ORDER BY restrauntName"""
         },
     7: {"title" : "Most popular dish by total quantity sold",
@@ -231,10 +235,12 @@ queries = {
                 SELECT AVG(custTotal) FROM (
                     SELECT SUM(totalAmmount) AS custTotal
                     FROM Orders
-                    GROUP BY custID
+                    GROUP BY custID)
             )"""
         },
 }
+
+
 
 def processQuery():
     selected = query_choice.get()
@@ -253,7 +259,7 @@ def processQuery():
     results = cursor.fetchall()
 
     columnNames = []
-    for column in cursor.description():
+    for column in cursor.description:
         columnNames.append(column[0])
 
     filename = f"Query_{selected}_report.txt"
@@ -279,7 +285,7 @@ def processQuery():
 
 window = tk.Tk()
 
-window.title("IDEK")
+window.title("Query Selection")
 window.geometry("900x1000")
 
 title_label = tk.Label(
