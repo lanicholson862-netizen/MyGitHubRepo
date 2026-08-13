@@ -312,14 +312,14 @@ def processQuery():
 
         for heading in columnNames:
             file.write(f"{heading:<25}")
-        
+
+        file.write("\n")
+        file.write("-" * (25 * len(columnNames)) + "\n")
+
+        for row in results:
+            for value in row:
+                file.write(f"{str(value):<25}")
             file.write("\n")
-            file.write("-" * 70 + "\n")
-        
-            for row in results:
-                for value in row:
-                    file.write(f"{str(value):<25}")
-                file.write("\n")
         
         messagebox.showinfo(
             "Report created",
