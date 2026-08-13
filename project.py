@@ -551,6 +551,32 @@ def delete_order():
     else:
         messagebox.showinfo("Success", "Order deleted successfully!")
 
+def delete_customer():
+    cust_id = simpledialog.askinteger("Delete Customer", "Enter Customer ID to delete:")
+    if not cust_id:
+        return
+
+    confirm = messagebox.askyesno(
+        "Confirm Delete",
+        f"Are you sure you want to delete Customer ID {cust_id}?\n"
+        "This will fail if the customer still has existing orders."
+    )
+    if not confirm:
+        return
+
+    try:
+        cursor.execute("DELETE FROM Customers WHERE custID = ?", (cust_id,))
+        conn.commit()
+        if cursor.rowcount == 0:
+            messagebox.showerror("Error", f"Customer ID {cust_id} does not exist.")
+        else:
+            messagebox.showinfo("Success", "Customer deleted successfully!")
+    except sqlite3.IntegrityError:
+        messagebox.showerror(
+            "Error",
+            "Cannot delete this customer because they still have orders on record."
+        )
+
 
 def processQuery():
     selected = query_choice.get()
