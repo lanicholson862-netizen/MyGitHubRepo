@@ -384,6 +384,52 @@ def add_dish():
     conn.commit()
     messagebox.showinfo("Success", "Dish added successfully!")
 
+def update_order():
+    order_id = simpledialog.askinteger("Update Order", "Enter Order ID to update:")
+    if not order_id:
+        return
+ 
+    cursor.execute("SELECT * FROM Orders WHERE orderID = ?", (order_id,))
+    row = cursor.fetchone()
+    if not row:
+        messagebox.showerror("Error", f"Order ID {order_id} does not exist.")
+        return
+ 
+    cust_id = simpledialog.askinteger("Update Order", "Customer ID:", initialvalue=row[1])
+    if not cust_id:
+        return
+    dish_id = simpledialog.askinteger("Update Order", "Dish ID:", initialvalue=row[2])
+    if not dish_id:
+        return
+    order_date = simpledialog.askstring(
+        "Update Order", "Order Date (YYYY-MM-DD):", initialvalue=row[3]
+    )
+    if not order_date:
+        return
+    quantity = simpledialog.askinteger("Update Order", "Quantity:", initialvalue=row[4])
+    if not quantity:
+        return
+ 
+    
+    cursor.execute("SELECT dishPrice FROM Dish WHERE dishID = ?", (dish_id,))
+    result = cursor.fetchone()
+    if not result:
+        messagebox.showerror("Error", f"Dish ID {dish_id} does not exist.")
+        return
+ 
+    dish_price = result[0]
+    delivery_fee = 5.95
+    total_amount = (quantity * dish_price) + delivery_fee
+ 
+    sql = """
+        UPDATE Orders
+        SET custID = ?, dishID = ?, orderDate = ?, quantity = ?, totalAmmount = ?
+        WHERE orderID = ?
+    """
+    cursor.execute(sql, (cust_id, dish_id, order_date, quantity, total_amount, order_id))
+    conn.commit()
+    messagebox.showinfo("Success", "Order updated successfully!")
+
 def processQuery():
     selected = query_choice.get()
     if selected == 0:
