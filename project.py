@@ -410,7 +410,6 @@ def update_order():
     if not quantity:
         return
  
-    
     cursor.execute("SELECT dishPrice FROM Dish WHERE dishID = ?", (dish_id,))
     result = cursor.fetchone()
     if not result:
@@ -429,6 +428,49 @@ def update_order():
     cursor.execute(sql, (cust_id, dish_id, order_date, quantity, total_amount, order_id))
     conn.commit()
     messagebox.showinfo("Success", "Order updated successfully!")
+
+def update_customer():
+    cust_id = simpledialog.askinteger("Update Customer", "Enter Customer ID to update:")
+    if not cust_id:
+        return
+ 
+    cursor.execute("SELECT * FROM Customers WHERE custID = ?", (cust_id,))
+    row = cursor.fetchone()
+    if not row:
+        messagebox.showerror("Error", f"Customer ID {cust_id} does not exist.")
+        return
+ 
+    first = simpledialog.askstring("Update Customer", "First Name:", initialvalue=row[1])
+    if not first:
+        return
+    last = simpledialog.askstring("Update Customer", "Last Name:", initialvalue=row[2])
+    if not last:
+        return
+    email = simpledialog.askstring("Update Customer", "Email:", initialvalue=row[3])
+    if not email:
+        return
+    address = simpledialog.askstring("Update Customer", "Address:", initialvalue=row[4])
+    if not address:
+        return
+    suburb = simpledialog.askstring("Update Customer", "Suburb:", initialvalue=row[5])
+    if not suburb:
+        return
+    postcode = simpledialog.askinteger("Update Customer", "Postcode:", initialvalue=row[6])
+    if postcode is None:
+        return
+    phone = simpledialog.askstring("Update Customer", "Phone Number:", initialvalue=row[7])
+    if not phone:
+        return
+ 
+    sql = """
+        UPDATE Customers
+        SET custFirstName = ?, custSecondName = ?, custEmail = ?, custAddress = ?,
+            suburb = ?, PostCode = ?, custPhoneNo = ?
+        WHERE custID = ?
+    """
+    cursor.execute(sql, (first, last, email, address, suburb, postcode, phone, cust_id))
+    conn.commit()
+    messagebox.showinfo("Success", "Customer updated successfully!")
 
 def processQuery():
     selected = query_choice.get()
@@ -489,6 +531,44 @@ title_label = tk.Label(
 )
 
 title_label.pack(pady=20)
+
+crud_label = tk.Label(
+    window,
+    text="Manage Records",
+    font=("Arial", 14, "bold")
+)
+crud_label.pack(pady=(0, 5))
+ 
+crud_frame = tk.Frame(window)
+crud_frame.pack(pady=10)
+ 
+# Each tuple is (Entity Name, add_func, update_func, delete_func)
+crud_entities = [
+    ("Customer", add_customer, update_customer, delete_customer),
+    ("Restraunt", add_restraunt, update_restraunt, delete_restraunt),
+    ("Dish", add_dish, update_dish, delete_dish),
+    ("Order", add_new_order, update_order, delete_order),
+]
+ 
+# Column headers
+tk.Label(crud_frame, text="", width=12).grid(row=0, column=0)
+tk.Label(crud_frame, text="Add", font=("Arial", 10, "bold")).grid(row=0, column=1, padx=10)
+tk.Label(crud_frame, text="Update", font=("Arial", 10, "bold")).grid(row=0, column=2, padx=10)
+tk.Label(crud_frame, text="Delete", font=("Arial", 10, "bold")).grid(row=0, column=3, padx=10)
+ 
+for i, (entity_name, add_fn, update_fn, delete_fn) in enumerate(crud_entities, start=1):
+    tk.Label(crud_frame, text=entity_name, font=("Arial", 11)).grid(
+        row=i, column=0, sticky="w", padx=10, pady=5
+    )
+    tk.Button(crud_frame, text="Add", width=12, command=add_fn).grid(
+        row=i, column=1, padx=10, pady=5
+    )
+    tk.Button(crud_frame, text="Update", width=12, command=update_fn).grid(
+        row=i, column=2, padx=10, pady=5
+    )
+    tk.Button(crud_frame, text="Delete", width=12, command=delete_fn, fg="red").grid(
+        row=i, column=3, padx=10, pady=5
+    )
 
 instruction_label = tk.Label(
     window,
