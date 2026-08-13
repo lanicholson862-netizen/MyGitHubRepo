@@ -661,7 +661,13 @@ def export_to_csv():
         "dish.csv"
     )
  
-
+def export_and_close():
+    try:
+        export_to_csv()
+    except Exception as e:
+        messagebox.showerror("Export Error", f"Could not export to CSV:\n{e}")
+        return
+    window.destroy()
 
 def processQuery():
     selected = query_choice.get()
@@ -800,7 +806,7 @@ process_button.pack(pady=25)
 close_button = tk.Button(
     window,
     text="Close",
-    command=window.destroy,
+    command=export_and_close,
     font=("Arial", 12, "bold"),
     width=15
 )
