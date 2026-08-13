@@ -346,6 +346,24 @@ def add_customer():
     conn.commit()
     messagebox.showinfo("Success", "Customer added successfully!")
 
+def add_restraunt():
+    name = simpledialog.askstring("New Restraunt", "Restraunt Name:")
+    if not name:
+        return
+    address = simpledialog.askstring("New Restraunt", "Address:")
+    if not address:
+        return
+    phone = simpledialog.askstring("New Restraunt", "Phone Number:")
+    if not phone:
+        return
+
+    sql = """
+        INSERT INTO Restraunt (restrauntName, restrauntAddress, restrauntPhoneNo)
+        VALUES (?, ?, ?)
+    """
+    cursor.execute(sql, (name, address, phone))
+    conn.commit()
+    messagebox.showinfo("Success", "Restraunt added successfully!")
 
 def processQuery():
     selected = query_choice.get()
