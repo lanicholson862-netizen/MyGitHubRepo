@@ -472,6 +472,66 @@ def update_customer():
     conn.commit()
     messagebox.showinfo("Success", "Customer updated successfully!")
 
+def update_restraunt():
+    rest_id = simpledialog.askinteger("Update Restraunt", "Enter Restraunt ID to update:")
+    if not rest_id:
+        return
+ 
+    cursor.execute("SELECT * FROM Restraunt WHERE restrauntID = ?", (rest_id,))
+    row = cursor.fetchone()
+    if not row:
+        messagebox.showerror("Error", f"Restraunt ID {rest_id} does not exist.")
+        return
+ 
+    name = simpledialog.askstring("Update Restraunt", "Restraunt Name:", initialvalue=row[1])
+    if not name:
+        return
+    address = simpledialog.askstring("Update Restraunt", "Address:", initialvalue=row[2])
+    if not address:
+        return
+    phone = simpledialog.askstring("Update Restraunt", "Phone Number:", initialvalue=row[3])
+    if not phone:
+        return
+ 
+    sql = """
+        UPDATE Restraunt
+        SET restrauntName = ?, restrauntAddress = ?, restrauntPhoneNo = ?
+        WHERE restrauntID = ?
+    """
+    cursor.execute(sql, (name, address, phone, rest_id))
+    conn.commit()
+    messagebox.showinfo("Success", "Restraunt updated successfully!")
+
+def update_dish():
+    dish_id = simpledialog.askinteger("Update Dish", "Enter Dish ID to update:")
+    if not dish_id:
+        return
+ 
+    cursor.execute("SELECT * FROM Dish WHERE dishID = ?", (dish_id,))
+    row = cursor.fetchone()
+    if not row:
+        messagebox.showerror("Error", f"Dish ID {dish_id} does not exist.")
+        return
+ 
+    rest_id = simpledialog.askinteger("Update Dish", "Restraunt ID:", initialvalue=row[1])
+    if not rest_id:
+        return
+    name = simpledialog.askstring("Update Dish", "Dish Name:", initialvalue=row[2])
+    if not name:
+        return
+    price = simpledialog.askfloat("Update Dish", "Dish Price ($):", initialvalue=row[3])
+    if price is None:
+        return
+ 
+    sql = """
+        UPDATE Dish
+        SET restrauntID = ?, dishName = ?, dishPrice = ?
+        WHERE dishID = ?
+    """
+    cursor.execute(sql, (rest_id, name, price, dish_id))
+    conn.commit()
+    messagebox.showinfo("Success", "Dish updated successfully!")
+
 def processQuery():
     selected = query_choice.get()
     if selected == 0:
@@ -541,16 +601,15 @@ crud_label.pack(pady=(0, 5))
  
 crud_frame = tk.Frame(window)
 crud_frame.pack(pady=10)
- 
-# Each tuple is (Entity Name, add_func, update_func, delete_func)
+
 crud_entities = [
+    ("Order", add_new_order, update_order, delete_order)
     ("Customer", add_customer, update_customer, delete_customer),
     ("Restraunt", add_restraunt, update_restraunt, delete_restraunt),
     ("Dish", add_dish, update_dish, delete_dish),
-    ("Order", add_new_order, update_order, delete_order),
 ]
  
-# Column headers
+
 tk.Label(crud_frame, text="", width=12).grid(row=0, column=0)
 tk.Label(crud_frame, text="Add", font=("Arial", 10, "bold")).grid(row=0, column=1, padx=10)
 tk.Label(crud_frame, text="Update", font=("Arial", 10, "bold")).grid(row=0, column=2, padx=10)
