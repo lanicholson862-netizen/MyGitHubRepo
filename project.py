@@ -603,6 +603,32 @@ def delete_restraunt():
             "Cannot delete this restraunt because it still has dishes on record."
         )
 
+def delete_dish():
+    dish_id = simpledialog.askinteger("Delete Dish", "Enter Dish ID to delete:")
+    if not dish_id:
+        return
+
+    confirm = messagebox.askyesno(
+        "Confirm Delete",
+        f"Are you sure you want to delete Dish ID {dish_id}?\n"
+        "This will fail if the dish still appears on existing orders."
+    )
+    if not confirm:
+        return
+
+    try:
+        cursor.execute("DELETE FROM Dish WHERE dishID = ?", (dish_id,))
+        conn.commit()
+        if cursor.rowcount == 0:
+            messagebox.showerror("Error", f"Dish ID {dish_id} does not exist.")
+        else:
+            messagebox.showinfo("Success", "Dish deleted successfully!")
+    except sqlite3.IntegrityError:
+        messagebox.showerror(
+            "Error",
+            "Cannot delete this dish because it still appears on existing orders."
+        )
+
 
 def processQuery():
     selected = query_choice.get()
@@ -654,7 +680,7 @@ def processQuery():
 window = tk.Tk()
 
 window.title("Query Selection")
-window.geometry("900x1000")
+window.geometry("900x1300")
 
 title_label = tk.Label(
     window,
@@ -675,7 +701,7 @@ crud_frame = tk.Frame(window)
 crud_frame.pack(pady=10)
 
 crud_entities = [
-    ("Order", add_new_order, update_order, delete_order)
+    ("Order", add_new_order, update_order, delete_order),
     ("Customer", add_customer, update_customer, delete_customer),
     ("Restraunt", add_restraunt, update_restraunt, delete_restraunt),
     ("Dish", add_dish, update_dish, delete_dish),
