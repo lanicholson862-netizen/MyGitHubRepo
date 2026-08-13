@@ -532,6 +532,26 @@ def update_dish():
     conn.commit()
     messagebox.showinfo("Success", "Dish updated successfully!")
 
+def delete_order():
+    order_id = simpledialog.askinteger("Delete Order", "Enter Order ID to delete:")
+    if not order_id:
+        return
+
+    confirm = messagebox.askyesno(
+        "Confirm Delete",
+        f"Are you sure you want to delete Order ID {order_id}? This cannot be undone."
+    )
+    if not confirm:
+        return
+
+    cursor.execute("DELETE FROM Orders WHERE orderID = ?", (order_id,))
+    conn.commit()
+    if cursor.rowcount == 0:
+        messagebox.showerror("Error", f"Order ID {order_id} does not exist.")
+    else:
+        messagebox.showinfo("Success", "Order deleted successfully!")
+
+
 def processQuery():
     selected = query_choice.get()
     if selected == 0:
