@@ -134,7 +134,7 @@ queries = {
                 SELECT restrauntName, dishName
                 FROM Dish
                 JOIN Restraunt ON Dish.restrauntID = Restraunt.restrauntID
-                WHERE restrauntID LIKE ?
+                WHERE restrauntID = ?
                 ORDER BY restrauntID"""
         },
     7: {"title" : "Most popular dish by total quantity sold",
@@ -254,7 +254,7 @@ def getRestrauntID():
 
 def getRestrauntID2():
     restrauntID = simpledialog.askstring(
-        "Restraunt Name",
+        "Restraunt ID",
         "Enter Restraunt ID:"
     )
     if not restrauntID:
@@ -278,6 +278,41 @@ inputHandlers = {
     6: lambda: getRestrauntID2(),
     13: lambda: getDateRange(),
 }
+
+def add_new_order():
+    cust_id = simpledialog.askinteger("New Order", "Enter Customer ID:")
+    if not cust_id:
+        return
+    dish_id = simpledialog.askinteger("New Order", "Enter Dish ID:")
+    if not dish_id:
+        return
+    order_date = simpledialog.askstring(
+        "New Order", "Enter Order Date (YYYY-MM-DD):"
+    )
+    if not order_date:
+        return
+    quantity = simpledialog.askinteger("New Order", "Enter Quantity:")
+    if not quantity:
+        return
+
+    # Check dish price
+    cursor.execute("SELECT dishPrice FROM Dish WHERE dishID = ?", (dish_id,))
+    result = cursor.fetchone()
+
+    if not result:
+        messagebox.showerror("Error", f"Dish ID {dish_id} does not exist.")
+        return
+
+    dish_price = result[0]
+    delivery_fee = 5.95
+    total_amount = (quantity * dish_price) + delivery_fee
+
+    sql = """
+        INSERT INTO Orders (custID, dishID, orderDate, quantity, totalAmmount)
+        VALUES (?, ?, ?, ?, ?)
+    """
+    cursor.execute(sql, (cust_id, dish_id, order_date, quantity, total_amount))
+    conn.commit()
 
 def processQuery():
     selected = query_choice.get()
