@@ -629,6 +629,16 @@ def delete_dish():
             "Cannot delete this dish because it still appears on existing orders."
         )
 
+def export_table_to_csv(table_name, columns, filename):
+    cursor.execute(f"SELECT {', '.join(columns)} FROM {table_name}")
+    rows = cursor.fetchall()
+ 
+    with open(filename, "w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(columns)
+        writer.writerows(rows)
+ 
+
 
 def processQuery():
     selected = query_choice.get()
