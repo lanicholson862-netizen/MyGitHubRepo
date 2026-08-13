@@ -577,6 +577,32 @@ def delete_customer():
             "Cannot delete this customer because they still have orders on record."
         )
 
+def delete_restraunt():
+    rest_id = simpledialog.askinteger("Delete Restraunt", "Enter Restraunt ID to delete:")
+    if not rest_id:
+        return
+
+    confirm = messagebox.askyesno(
+        "Confirm Delete",
+        f"Are you sure you want to delete Restraunt ID {rest_id}?\n"
+        "This will fail if the restraunt still has dishes on record."
+    )
+    if not confirm:
+        return
+
+    try:
+        cursor.execute("DELETE FROM Restraunt WHERE restrauntID = ?", (rest_id,))
+        conn.commit()
+        if cursor.rowcount == 0:
+            messagebox.showerror("Error", f"Restraunt ID {rest_id} does not exist.")
+        else:
+            messagebox.showinfo("Success", "Restraunt deleted successfully!")
+    except sqlite3.IntegrityError:
+        messagebox.showerror(
+            "Error",
+            "Cannot delete this restraunt because it still has dishes on record."
+        )
+
 
 def processQuery():
     selected = query_choice.get()
