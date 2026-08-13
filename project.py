@@ -313,6 +313,39 @@ def add_new_order():
     """
     cursor.execute(sql, (cust_id, dish_id, order_date, quantity, total_amount))
     conn.commit()
+    messagebox.showinfo("Success", "Order added successfully!")
+
+def add_customer():
+    first = simpledialog.askstring("New Customer", "First Name:")
+    if not first:
+        return
+    last = simpledialog.askstring("New Customer", "Last Name:")
+    if not last:
+        return
+    email = simpledialog.askstring("New Customer", "Email:")
+    if not email:
+        return
+    address = simpledialog.askstring("New Customer", "Address:")
+    if not address:
+        return
+    suburb = simpledialog.askstring("New Customer", "Suburb:")
+    if not suburb:
+        return
+    postcode = simpledialog.askinteger("New Customer", "Postcode:")
+    if not postcode:
+        return
+    phone = simpledialog.askstring("New Customer", "Phone Number:")
+    if not phone:
+        return
+
+    sql = """
+        INSERT INTO Customers (custFirstName, custSecondName, custEmail, custAddress, suburb, PostCode, custPhoneNo)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """
+    cursor.execute(sql, (first, last, email, address, suburb, postcode, phone))
+    conn.commit()
+    messagebox.showinfo("Success", "Customer added successfully!")
+
 
 def processQuery():
     selected = query_choice.get()
