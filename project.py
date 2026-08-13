@@ -134,8 +134,8 @@ queries = {
                 SELECT restrauntName, dishName
                 FROM Dish
                 JOIN Restraunt ON Dish.restrauntID = Restraunt.restrauntID
-                WHERE restrauntName LIKE ?
-                ORDER BY restrauntName"""
+                WHERE restrauntID LIKE ?
+                ORDER BY restrauntID"""
         },
     7: {"title" : "Most popular dish by total quantity sold",
         "sql" : """
@@ -252,14 +252,14 @@ def getRestrauntID():
         return None
     return (restrauntID,)
 
-def getRestrauntName():
-    restrauntName = simpledialog.askstring(
+def getRestrauntID():
+    restrauntID = simpledialog.askstring(
         "Restraunt Name",
-        "Enter Restraunt Name (partial name is OK):"
+        "Enter Restraunt ID:"
     )
-    if not restrauntName:
+    if not restrauntID:
         return None
-    return (f"%{restrauntName}%",)
+    return (f"%{restrauntID}%",)
 
 def getDateRange():
     startDate = simpledialog.askstring("Start Date", "Enter start date (YYYY-MM-DD):")
@@ -275,7 +275,7 @@ inputHandlers = {
     2: lambda: getRestrauntID(),
     3: lambda: getCustID(),
     4: lambda: getCustID(),
-    6: lambda: getRestrauntName(),
+    6: lambda: getRestrauntID(),
     13: lambda: getDateRange(),
 }
 
