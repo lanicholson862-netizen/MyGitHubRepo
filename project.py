@@ -638,6 +638,29 @@ def export_table_to_csv(table_name, columns, filename):
         writer.writerow(columns)
         writer.writerows(rows)
  
+def export_to_csv():
+    export_table_to_csv(
+        "Customers",
+        ["custID", "custFirstName", "custSecondName", "custEmail",
+         "custAddress", "suburb", "PostCode", "custPhoneNo"],
+        "customers.csv"
+    )
+    export_table_to_csv(
+        "Orders",
+        ["orderID", "custID", "dishID", "orderDate", "quantity", "totalAmmount"],
+        "orders.csv"
+    )
+    export_table_to_csv(
+        "Restraunt",
+        ["restrauntID", "restrauntName", "restrauntAddress", "restrauntPhoneNo"],
+        "restraunt.csv"
+    )
+    export_table_to_csv(
+        "Dish",
+        ["dishID", "restrauntID", "dishName", "dishPrice"],
+        "dish.csv"
+    )
+ 
 
 
 def processQuery():
