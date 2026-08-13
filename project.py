@@ -252,7 +252,7 @@ def getRestrauntID():
         return None
     return (restrauntID,)
 
-def getRestrauntID():
+def getRestrauntID2():
     restrauntID = simpledialog.askstring(
         "Restraunt Name",
         "Enter Restraunt ID:"
@@ -275,7 +275,7 @@ inputHandlers = {
     2: lambda: getRestrauntID(),
     3: lambda: getCustID(),
     4: lambda: getCustID(),
-    6: lambda: getRestrauntID(),
+    6: lambda: getRestrauntID2(),
     13: lambda: getDateRange(),
 }
 
