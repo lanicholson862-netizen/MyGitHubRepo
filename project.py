@@ -365,6 +365,25 @@ def add_restraunt():
     conn.commit()
     messagebox.showinfo("Success", "Restraunt added successfully!")
 
+def add_dish():
+    rest_id = simpledialog.askinteger("New Dish", "Restraunt ID:")
+    if not rest_id:
+        return
+    name = simpledialog.askstring("New Dish", "Dish Name:")
+    if not name:
+        return
+    price = simpledialog.askfloat("New Dish", "Dish Price ($):")
+    if price is None:
+        return
+
+    sql = """
+        INSERT INTO Dish (restrauntID, dishName, dishPrice)
+        VALUES (?, ?, ?)
+    """
+    cursor.execute(sql, (rest_id, name, price))
+    conn.commit()
+    messagebox.showinfo("Success", "Dish added successfully!")
+
 def processQuery():
     selected = query_choice.get()
     if selected == 0:
