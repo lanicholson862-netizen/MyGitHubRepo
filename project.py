@@ -252,32 +252,23 @@ queries = {
         },
 }
 
-def getCustID(prompt="Enter Customer ID:"):
-    custID = simpledialog.askinteger("Customer ID", prompt)
+def getCustID():
+    custID = simpledialog.askinteger("Customer ID", "Enter Customer ID:", parent=window)
     if custID is None:
         return None
     return (custID,)
 
 def getRestrauntID():
-    restrauntID = simpledialog.askinteger("Restraunt ID", "Enter Restraunt ID:")
+    restrauntID = simpledialog.askinteger("Restraunt ID", "Enter Restraunt ID:", parent=window)
     if restrauntID is None:
         return None
     return (restrauntID,)
 
-def getRestrauntID2():
-    restrauntID = simpledialog.askstring(
-        "Restraunt ID",
-        "Enter Restraunt ID:"
-    )
-    if not restrauntID:
-        return None
-    return (f"%{restrauntID}%",)
-
 def getDateRange():
-    startDate = simpledialog.askstring("Start Date", "Enter start date (YYYY-MM-DD):")
+    startDate = simpledialog.askstring("Start Date", "Enter start date (YYYY-MM-DD):", parent=window)
     if not startDate:
         return None
-    endDate = simpledialog.askstring("End Date", "Enter end date (YYYY-MM-DD):")
+    endDate = simpledialog.askstring("End Date", "Enter end date (YYYY-MM-DD):", parent=window)
     if not endDate:
         return None
     return (startDate, endDate)
@@ -671,7 +662,7 @@ def export_to_csv():
         ["dishID", "restrauntID", "dishName", "dishPrice"],
         "dish.csv"
     )
- 
+
 def export_and_close():
     try:
         export_to_csv()
@@ -684,6 +675,11 @@ def show_results_window(title, columnNames, results):
     result_window = tk.Toplevel(window)
     result_window.title(title)
     result_window.geometry("800x500")
+
+    result_window.lift()
+    result_window.focus_force()
+    result_window.attributes("-topmost", True)
+    result_window.after_idle(result_window.attributes, "-topmost", False)
 
     tree_frame = tk.Frame(result_window)
     tree_frame.pack(fill="both", expand=True, padx=10, pady=10)
@@ -754,12 +750,13 @@ def processQuery():
                 file.write(f"{str(value):<25}")
             file.write("\n")
 
-    show_results_window(title, columnNames, results)
-
     messagebox.showinfo(
         "Report created",
         f"{filename} has been successfully created."
     )
+
+    show_results_window(title, columnNames, results)
+    
 
 window = tk.Tk()
 
