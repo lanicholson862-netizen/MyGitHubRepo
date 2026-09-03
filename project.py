@@ -730,6 +730,13 @@ def processQuery():
     cursor.execute(sql, params)
     results = cursor.fetchall()
 
+    if not results:
+        messagebox.showwarning(
+            "No Results",
+            "No matching Records Were Found"
+        )
+        return
+
     columnNames = []
     for column in cursor.description:
         columnNames.append(column[0])
