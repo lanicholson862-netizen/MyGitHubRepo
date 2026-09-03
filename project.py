@@ -143,11 +143,10 @@ queries = {
         },
     6: {"title" : "Dishes and the restraunts that serve them",
         "sql" : """
-                SELECT restrauntName, dishName
+                SELECT dishName, restrauntName
                 FROM Dish
                 JOIN Restraunt ON Dish.restrauntID = Restraunt.restrauntID
-                WHERE restrauntID = ?
-                ORDER BY restrauntID"""
+                ORDER BY Restraunt.restrauntID"""
         },
     7: {"title" : "Most popular dish by total quantity sold",
         "sql" : """
@@ -287,7 +286,6 @@ inputHandlers = {
     2: lambda: getRestrauntID(),
     3: lambda: getCustID(),
     4: lambda: getCustID(),
-    6: lambda: getRestrauntID2(),
     13: lambda: getDateRange(),
 }
 
