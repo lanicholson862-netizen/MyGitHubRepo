@@ -667,6 +667,18 @@ def export_and_close():
         return
     window.destroy()
 
+def view_table(table_name):
+    cursor.execute(f"SELECT * FROM {table_name}")
+    results = cursor.fetchall()
+
+    columnNames = [column[0] for column in cursor.description]
+
+    if not results:
+        messagebox.showinfo("No Records", f"The {table_name} table is empty.")
+        return
+
+    show_results_window(f"{table_name} Table", columnNames, results)
+
 def show_results_window(title, columnNames, results):
     result_window = tk.Toplevel(window)
     result_window.title(title)
@@ -785,10 +797,10 @@ crud_frame = tk.Frame(window)
 crud_frame.pack(pady=10)
 
 crud_entities = [
-    ("Order", add_new_order, update_order, delete_order),
-    ("Customer", add_customer, update_customer, delete_customer),
-    ("Restraunt", add_restraunt, update_restraunt, delete_restraunt),
-    ("Dish", add_dish, update_dish, delete_dish),
+    ("Order", add_new_order, update_order, delete_order, lambda: view_table("Orders")),
+    ("Customer", add_customer, update_customer, delete_customer, lambda: view_table("Customers")),
+    ("Restraunt", add_restraunt, update_restraunt, delete_restraunt, lambda: view_table("Restraunt")),
+    ("Dish", add_dish, update_dish, delete_dish, lambda: view_table("Dish")),
 ]
  
 
@@ -796,8 +808,9 @@ tk.Label(crud_frame, text="", width=12).grid(row=0, column=0)
 tk.Label(crud_frame, text="Add", font=("Arial", 10, "bold")).grid(row=0, column=1, padx=10)
 tk.Label(crud_frame, text="Update", font=("Arial", 10, "bold")).grid(row=0, column=2, padx=10)
 tk.Label(crud_frame, text="Delete", font=("Arial", 10, "bold")).grid(row=0, column=3, padx=10)
+tk.Label(crud_frame, text="View", font=("Arial", 10, "bold")).grid(row=0, column=4, padx=10)
  
-for i, (entity_name, add_fn, update_fn, delete_fn) in enumerate(crud_entities, start=1):
+for i, (entity_name, add_fn, update_fn, delete_fn, view_fn) in enumerate(crud_entities, start=1):
     tk.Label(crud_frame, text=entity_name, font=("Arial", 11)).grid(
         row=i, column=0, sticky="w", padx=10, pady=5
     )
@@ -809,6 +822,9 @@ for i, (entity_name, add_fn, update_fn, delete_fn) in enumerate(crud_entities, s
     )
     tk.Button(crud_frame, text="Delete", width=12, command=delete_fn, fg="red").grid(
         row=i, column=3, padx=10, pady=5
+    )
+    tk.Button(crud_frame, text="View", width=12, command=view_fn).grid(
+        row=i, column=4, padx=10, pady=5
     )
 
 instruction_label = tk.Label(
