@@ -613,23 +613,19 @@ def delete_dish():
     confirm = messagebox.askyesno(
         "Confirm Delete",
         f"Are you sure you want to delete Dish ID {dish_id}?\n"
-        "This will fail if the dish still appears on existing orders."
+        "This will also delete any orders that include this dish."
     )
     if not confirm:
         return
 
-    try:
-        cursor.execute("DELETE FROM Dish WHERE dishID = ?", (dish_id,))
-        conn.commit()
-        if cursor.rowcount == 0:
-            messagebox.showerror("Error", f"Dish ID {dish_id} does not exist.")
-        else:
-            messagebox.showinfo("Success", "Dish deleted successfully!")
-    except sqlite3.IntegrityError:
-        messagebox.showerror(
-            "Error",
-            "Cannot delete this dish because it still appears on existing orders."
-        )
+    cursor.execute("DELETE FROM Orders WHERE dishID = ?", (dish_id,))
+    cursor.execute("DELETE FROM Dish WHERE dishID = ?", (dish_id,))
+    conn.commit()
+    
+    if cursor.rowcount == 0:
+        messagebox.showerror("Error", f"Dish ID {dish_id} does not exist.")
+    else:
+        messagebox.showinfo("Success", "Dish deleted successfully!")
 
 def export_table_to_csv(table_name, columns, filename):
     cursor.execute(f"SELECT {', '.join(columns)} FROM {table_name}")
