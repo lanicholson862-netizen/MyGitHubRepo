@@ -753,11 +753,13 @@ def processQuery():
             for value in row:
                 file.write(f"{str(value):<25}")
             file.write("\n")
-        
-        messagebox.showinfo(
-            "Report created",
-            f"{filename} has been successfully created."
-        )
+
+    show_results_window(title, columnNames, results)
+
+    messagebox.showinfo(
+        "Report created",
+        f"{filename} has been successfully created."
+    )
 
 window = tk.Tk()
 
