@@ -4,6 +4,7 @@ import csv
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
+from tkinter import ttk
 
 DB_Name = "delivery_recording_system.db"
 
@@ -678,6 +679,38 @@ def export_and_close():
         messagebox.showerror("Export Error", f"Could not export to CSV:\n{e}")
         return
     window.destroy()
+
+def show_results_window(title, columnNames, results):
+    result_window = tk.Toplevel(window)
+    result_window.title(title)
+    result_window.geometry("800x500")
+
+    tree_frame = tk.Frame(result_window)
+    tree_frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+    vsb = tk.Scrollbar(tree_frame, orient="vertical")
+    hsb = tk.Scrollbar(tree_frame, orient="horizontal")
+
+    tree = ttk.Treeview(
+        tree_frame,
+        columns=columnNames,
+        show="headings",
+        yscrollcommand=vsb.set,
+        xscrollcommand=hsb.set
+    )
+
+    vsb.config(command=tree.yview)
+    hsb.config(command=tree.xview)
+    vsb.pack(side="right", fill="y")
+    hsb.pack(side="bottom", fill="x")
+    tree.pack(fill="both", expand=True)
+
+    for col in columnNames:
+        tree.heading(col, text=col)
+        tree.column(col, width=120, anchor="w")
+
+    for row in results:
+        tree.insert("", "end", values=row)
 
 def processQuery():
     selected = query_choice.get()
