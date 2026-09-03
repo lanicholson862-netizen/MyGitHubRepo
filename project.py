@@ -7,6 +7,8 @@ from tkinter import simpledialog
 
 DB_Name = "delivery_recording_system.db"
 
+Delivery_Fee = 5.95
+
 conn = sqlite3.connect(DB_Name)
 cursor = conn.cursor()
 
@@ -90,6 +92,16 @@ with open("dish.csv", "r", encoding="utf-8-sig") as dishData:
         cursor.execute(
             "INSERT OR IGNORE INTO Dish VALUES (?, ?, ?, ?)", row
             )
+
+cursor.execute("""
+    UPDATE Orders
+    SET totalAmmount = (
+        SELECT Dish.dishPrice * Orders.quantity + ?
+        FROM Dish
+        WHERE Dish.dishID = Orders.dishID
+    )
+    WHERE dishID IN (SELECT dishID FROM Dish)
+""", (Delivery_Fee,))
 
 conn.commit()
 
@@ -304,7 +316,7 @@ def add_new_order():
         return
 
     dish_price = result[0]
-    delivery_fee = 5.95
+    delivery_fee = Delivery_Fee
     total_amount = (quantity * dish_price) + delivery_fee
 
     sql = """
@@ -417,7 +429,7 @@ def update_order():
         return
  
     dish_price = result[0]
-    delivery_fee = 5.95
+    delivery_fee = Delivery_Fee
     total_amount = (quantity * dish_price) + delivery_fee
  
     sql = """
